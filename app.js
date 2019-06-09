@@ -2,7 +2,8 @@ const app = require('express')(),
     bodyParser = require('body-parser'),
     mongoose = require('mongoose'),
     Camp = require("./models/camp"),
-    Comment = require("./models/comment");
+    Comment = require("./models/comment"),
+    seedDB = require("./seed")();
     
 // Mongoose is a ODM - object data mapper, JS layer on top of mongodb
     
@@ -50,10 +51,11 @@ app.get("/camps/new", (req, res) => {
 // Showing a single camp
 app.get("/camps/:id", (req, res) => {
     const id = req.params.id;
-    Camp.findById(id, (err, camp) => {
+    Camp.findById(id).populate("comments").exec((err, camp) => {
         if(err) {
             console.log(err);
         } else {
+            // console.log(camp);
             res.render("show", {camp});
         }
     })
