@@ -1,0 +1,21 @@
+<% include ../partials/header %>
+
+<div class="container">
+  <h1 style="text-align: center;">Add a new Comment for <%= camp.name %></h1>
+  <div style="margin: 20px auto;width: 30%;">
+    <form action="/camps/<%= camp._id %>/comments" method="POST">
+      <div class="form-group">
+        <input type="text" name="comment[text]" placeholder="text" class="form-control" required>
+      </div>
+      <div class="form-group">
+        <input type="text" name="comment[author]" placeholder="author" class="form-control" required>
+      </div>
+      <div class="form-group">
+        <input class="btn btn-lg btn-primary btn-block" type="submit">
+      </div>
+    </form>
+    <a href="/camps/<%= camp._id %>">Back</a>
+  </div>
+</div>
+
+<% include ../partials/footer %>

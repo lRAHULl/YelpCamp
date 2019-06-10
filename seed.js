@@ -40,6 +40,7 @@ function seedDB() {
                            } else {
                                 camp.comments.push(comment);
                                 camp.save();
+                                console.log("Created a comment");
                            }
                         })
                     }
