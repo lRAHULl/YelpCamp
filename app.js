@@ -9,13 +9,13 @@ const express = require('express'),
     commentRoutes = require("./routes/comments"),
     indexRoutes = require("./routes/index"),
     app = express();
-    // seedDB = require("./seed")();
+// seedDB = require("./seed")();
 
-    /* Mongoose is a ODM - object data mapper, JS layer on top of mongodb */
+/* Mongoose is a ODM - object data mapper, JS layer on top of mongodb */
 
-    mongoose.connect("mongodb://localhost:27017/camp_demo", {
-        useNewUrlParser: true
-    });
+mongoose.connect("mongodb://localhost:27017/camp_demo", {
+    useNewUrlParser: true
+});
 
 app.set("view engine", "ejs");
 app.use(express.static(__dirname + "/public"));

@@ -1,12 +1,13 @@
 const express = require("express"),
   Comment = require("../models/comment"),
   Camp = require("../models/camp"),
+  middleware = require("../middleware"),
   router = express.Router({
     mergeParams: true
   });
 
 // New Comment Route - Render the form
-router.get("/new", isLoggedIn, (req, res) => {
+router.get("/new", middleware.isLoggedIn, (req, res) => {
   Camp.findById(req.params.id, (err, camp) => {
     if (err) {
       console.log(err);
@@ -19,7 +20,7 @@ router.get("/new", isLoggedIn, (req, res) => {
 });
 
 // Create Comment Route
-router.post("/", isLoggedIn, (req, res) => {
+router.post("/", middleware.isLoggedIn, (req, res) => {
   Camp.findById(req.params.id, (err, camp) => {
     if (err) {
       console.log(err);
@@ -46,13 +47,38 @@ router.post("/", isLoggedIn, (req, res) => {
   });
 });
 
-// MiddleWare
-function isLoggedIn(req, res, next) {
-  // console.log(req.isAuthenticated());
-  if (req.isAuthenticated()) {
-    return next();
-  }
-  return res.redirect("/login");
-}
+router.get("/:comment_id/edit", middleware.checkCommentOwnership, (req, res) => {
+  Comment.findById(req.params.comment_id, (err, foundComment) => {
+    if (!err) {
+      res.render("comments/edit", {
+        camp_id: req.params.id,
+        comment: foundComment
+      })
+      // console.log(req.params.id)
+      // console.log(foundComment._id)
+      // res.send("Comment edit")
+    }
+  });
+});
+
+router.put("/:comment_id", middleware.checkCommentOwnership, (req, res) => {
+  Comment.findByIdAndUpdate(req.params.comment_id, req.body.comment, (err, updatedComment) => {
+    if (err) {
+      res.redirect("back");
+    } else {
+      res.redirect(`/camps/${req.params.id}`);
+    }
+  })
+});
+
+router.delete("/:comment_id", middleware.checkCommentOwnership, (req, res) => {
+  Comment.findByIdAndDelete(req.params.comment_id, (err, deletedComment) => {
+    if (err) {
+      res.redirect("back");
+    } else {
+      res.redirect(`/camps/${req.params.id}`);
+    }
+  });
+});
 
 module.exports = router;

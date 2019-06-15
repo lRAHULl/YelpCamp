@@ -1,5 +1,6 @@
 const express = require("express"),
   Camp = require("../models/camp"),
+  middleware = require("../middleware"),
   router = express.Router();
 
 // Camp Index Routes
@@ -19,7 +20,7 @@ router.get("/", (req, res) => {
 });
 
 // Create Camp Route
-router.post("/", isLoggedIn, (req, res) => {
+router.post("/", middleware.isLoggedIn, (req, res) => {
   const name = req.body.name,
     image = req.body.image,
     description = req.body.description,
@@ -44,7 +45,7 @@ router.post("/", isLoggedIn, (req, res) => {
 });
 
 // New Camp Route - Render the form
-router.get("/new", isLoggedIn, (req, res) => {
+router.get("/new", middleware.isLoggedIn, (req, res) => {
   res.render("camps/new");
 });
 
@@ -64,7 +65,7 @@ router.get("/:id", (req, res) => {
 });
 
 // Edit Camp Route
-router.get("/:id/edit", isAuthorized, (req, res) => {
+router.get("/:id/edit", middleware.checkCampOwnership, (req, res) => {
   Camp.findById(req.params.id, (err, camp) => {
     if (err) {
       return res.redirect("/camps");
@@ -76,7 +77,7 @@ router.get("/:id/edit", isAuthorized, (req, res) => {
 });
 
 // Update camp route
-router.put("/:id", isAuthorized, (req, res) => {
+router.put("/:id", middleware.checkCampOwnership, (req, res) => {
   Camp.findByIdAndUpdate(req.params.id, req.body.camp, (err, updatedCamp) => {
     if (err) {
       res.redirect("/camps");
@@ -87,7 +88,7 @@ router.put("/:id", isAuthorized, (req, res) => {
 });
 
 // Destroy Camp Route
-router.delete("/:id", isAuthorized, (req, res) => {
+router.delete("/:id", middleware.checkCampOwnership, (req, res) => {
   Camp.findByIdAndDelete(req.params.id, (err, deletedCamp) => {
     if (err) {
       res.redirect("/camps");
@@ -96,32 +97,5 @@ router.delete("/:id", isAuthorized, (req, res) => {
     }
   });
 })
-
-// MiddleWare
-function isLoggedIn(req, res, next) {
-  // console.log(req.isAuthenticated());
-  if (req.isAuthenticated()) {
-    return next();
-  }
-  return res.redirect("/login");
-}
-
-function isAuthorized(req, res, next) {
-  if (req.isAuthenticated()) {
-    Camp.findById(req.params.id, (err, foundCamp) => {
-      if (err) {
-        res.redirect("back");
-      } else {
-        if (foundCamp.author.id.equals(req.user._id)) {
-          next();
-        } else {
-          res.redirect("back");
-        }
-      }
-    })
-  } else {
-    res.redirect("/login");
-  }
-}
 
 module.exports = router;
