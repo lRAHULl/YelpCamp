@@ -5,6 +5,7 @@ const express = require('express'),
     mongoose = require('mongoose'),
     methodOverride = require("method-override"),
     User = require('./models/user'),
+    flash = require("connect-flash"),
     campRoutes = require("./routes/camps"),
     commentRoutes = require("./routes/comments"),
     indexRoutes = require("./routes/index"),
@@ -23,6 +24,7 @@ app.use(bodyParser.urlencoded({
     extended: true
 }));
 app.use(methodOverride("_method"));
+app.use(flash());
 
 // Passport Config
 app.use(require('express-session')({
@@ -38,6 +40,8 @@ passport.deserializeUser(User.deserializeUser());
 
 app.use((req, res, next) => {
     res.locals.user = req.user;
+    res.locals.error = req.flash("error");
+    res.locals.success = req.flash("success");
     next();
 });
 

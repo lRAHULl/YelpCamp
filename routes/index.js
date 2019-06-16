@@ -20,15 +20,16 @@ router.post("/register", (req, res) => {
   });
   User.register(newUser, req.body.password, (err, user) => {
     if (err) {
-      console.log(err);
-      return res.render("register");
+      req.flash("error", err.message);
+      res.redirect("/register");
+    } else {
+      // using local strategy in passport
+      passport.authenticate("local")(req, res, () => {
+        req.flash("success", `Signed you up, Have a great day ${user.username} :)`);
+        res.redirect("/camps");
+      });
     }
-
-    // using local strategy in passport
-    passport.authenticate("local")(req, res, () => {
-      res.redirect("/camps");
-    })
-  })
+  });
 });
 
 // Render the login Form
@@ -45,6 +46,7 @@ router.post("/login", passport.authenticate("local", {
 // Logout Route
 router.get("/logout", (req, res) => {
   req.logout();
+  req.flash("success", "Logged you out!!");
   res.redirect("/");
 }, () => {});
 

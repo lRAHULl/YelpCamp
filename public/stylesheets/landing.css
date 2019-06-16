@@ -1,0 +1,86 @@
+body {
+  background-color: black;
+}
+
+#landing-header {
+  z-index: 1;
+  position: relative;
+  text-align: center;
+  padding-top: 40vh;
+  /* text-transform: uppercase; */
+}
+
+#landing-header h1 {
+  color: white;
+  font-size: 5rem;
+}
+
+.slides {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  z-index: 0;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.slides li {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-size: cover;
+  background-position: 50% 50%;
+  background-repeat: no-repeat;
+  opacity: 0;
+  z-index: 0;
+  animation: imgAnime 50s linear infinite;
+}
+
+.slides li:nth-child(1) {
+  background-image: url(http://i.imgur.com/K3mPv14.jpg);
+}
+
+.slides li:nth-child(2) {
+  background-image: url(http://i.imgur.com/SBEmFpv.jpg);
+  animation-delay: 10s;
+}
+
+.slides li:nth-child(3) {
+  background-image: url(http://i.imgur.com/emvhOnb.jpg);
+  animation-delay: 20s;
+}
+
+.slides li:nth-child(4) {
+  background-image: url(http://i.imgur.com/2LSMCmJ.jpg);
+  animation-delay: 30s;
+}
+
+.slides li:nth-child(5) {
+  background-image: url(http://i.imgur.com/TVGe0Ef.jpg);
+  animation-delay: 40s;
+}
+
+@keyframes imgAnime {
+  0% {
+    opacity: 0;
+    animation-timing-function: ease-in;
+  }
+
+  10% {
+    opacity: 1;
+    animation-timing-function: ease-out;
+  }
+
+  20% {
+    opacity: 1;
+  }
+
+  30% {
+    opacity: 0;
+  }
+}
