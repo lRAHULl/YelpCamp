@@ -18,7 +18,7 @@ const express = require('express'),
 //     useNewUrlParser: true
 // });
 
-mongoose.connect("mongodb+srv://rahul:Rahul%4016roman@cluster0-cmlta.mongodb.net/test?retryWrites=true&w=majority", {
+mongoose.connect("mongodb+srv://rahul:Rahul%4016roman@cluster0-cmlta.mongodb.net/yelpcamp?retryWrites=true&w=majority", {
     useNewUrlParser: true
 }).then(() => {
     console.log("Connected :)");
