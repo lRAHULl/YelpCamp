@@ -18,12 +18,15 @@ const express = require('express'),
 //     useNewUrlParser: true
 // });
 
-mongoose.connect("mongodb+srv://rahul:Rahul%4016roman@cluster0-cmlta.mongodb.net/yelpcamp?retryWrites=true&w=majority", {
+const url = process.env.DATABASEURL || "mongodb://localhost:27017/camp_demo";
+// ""
+
+mongoose.connect(url, {
     useNewUrlParser: true
 }).then(() => {
-    console.log("Connected :)");
-}).catch(() => {
-    console.log("Failed :(");
+    console.log("Database Connected :)");
+}).catch((err) => {
+    console.log("Database connection Failed :(", err.message);
 });
 
 app.set("view engine", "ejs");
