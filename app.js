@@ -14,12 +14,7 @@ const express = require('express'),
 
 /* Mongoose is a ODM - object data mapper, JS layer on top of mongodb */
 
-// mongoose.connect("mongodb://localhost:27017/camp_demo", {
-//     useNewUrlParser: true
-// });
-
 const url = process.env.DATABASEURL || "mongodb://localhost:27017/camp_demo";
-// ""
 
 mongoose.connect(url, {
     useNewUrlParser: true
@@ -62,7 +57,7 @@ app.use("/camps", campRoutes); // Prefix for camp routes
 app.use("/camps/:id/comments", commentRoutes); // Prefix for Comment routes
 
 // port
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 4000;
 app.listen(PORT, process.env.IP, () => {
     console.log("YelpCamp Server has started....");
 });
