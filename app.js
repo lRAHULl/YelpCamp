@@ -14,8 +14,12 @@ const express = require('express'),
 
 /* Mongoose is a ODM - object data mapper, JS layer on top of mongodb */
 
-mongoose.connect("mongodb://localhost:27017/camp_demo", {
+mongoose.connect("mongodb+srv://rahul:Rahul%4016roman@cluster0-cmlta.mongodb.net/yelpcamp?retryWrites=true&w=majority", {
     useNewUrlParser: true
+}).then(() => {
+    console.log("Connected :)");
+}).catch(() => {
+    console.log("Failed :(");
 });
 
 app.set("view engine", "ejs");
